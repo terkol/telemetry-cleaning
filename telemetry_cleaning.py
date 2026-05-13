@@ -8,13 +8,13 @@ class BioreactorReading(BaseModel):
     timestamp: datetime
     sensor_id: str
     temperature_c: float = Field(ge=0.0, le=100.0) 
-    ph_level: float = Field(ge=0.0, le=14.0)       
+    ph_level: float = Field(ge=0.0, le=14.0)
     pressure_psi: float = Field(ge=0.0, le=100.0)  
 
-def process_telemetry(file_path: str):
+def process_telemetry(file_name: str):
     print("Loading raw telemetry...")
     path = Path(__file__).parent / 'data'
-    df = pd.read_csv(path / file_path)
+    df = pd.read_csv(path / file_name)
 
     raw_records = df.to_dict('records')
     clean_data = []
