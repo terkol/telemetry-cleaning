@@ -13,7 +13,7 @@ Because publicly available industrial datasets are often aggressively pre-cleane
 It was deliberately engineered to inject specific, critical edge cases found in real-world IoT environments to stress-test the pipeline's fault tolerance, including:
 * Temporal chaos (mixed Unix epoch, ISO 8601, and missing timestamps)
 * Type mismatches (e.g., reboot strings in float columns)
-* Physical impossibilities (e.g., pH > 14, temperatures exceeding boiling points)
+* Physical "impossibilities" (e.g., pH > 14, temperatures exceeding boiling points)
 
 ## Architecture & Stack
 ### Data I/O: 
@@ -42,15 +42,30 @@ Execute the pipeline on the raw telemetry file:
 
 `python telemetry_cleaning.py`
 
+## Running with Docker
+
+This project includes a Dockerfile to ensure it runs consistently across environments. This was my first time implementing containerization. I focused on using industry standards like layer caching and non-root users to learn the "production" way of shipping code. 
+
+### Build the Image
+From the project root, build the "telemetry-etl" image:
+
+`docker build -t telemetry-etl .`
+
+### Execute the Pipeline (with Volume Mounting)
+
+To allow the container to read your raw telemetry and write the output files back to your local data/ folder, run:
+
+`docker run --rm -v "$(pwd)/data:/app/data" telemetry-etl`
+
 ## Pipeline Outputs
 
-The script consumes `dirty_bioreactor_telemetry.csv` and automatically routes the data into two distinct artifacts:
+The script consumes `data/dirty_bioreactor_telemetry.csv` and automatically routes the data into two distinct artifacts:
 
-### `clean_telemetry.csv`:
+### `data/clean_telemetry.csv`:
 
 The validated, production-ready dataset. All timestamps are verified, data types are locked, and  anomalies have been removed. Ready for downstream Machine Learning models or BI dashboards.
 
-### `validation_report.json` (The Dead Letter Queue):
+### `data/validation_report.json` (The Dead Letter Queue):
 
 A structured diagnostic log detailing why specific rows were rejected.
 
