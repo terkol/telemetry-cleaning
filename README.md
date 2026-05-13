@@ -1,14 +1,14 @@
-# Industrial Telemetry ETL: Resilient Data Ingestion Pipeline
+# Industrial Telemetry ETL
 
-This repository contains a robust Data Engineering pipeline designed to ingest, validate, and route raw, error-prone IoT sensor telemetry from industrial bioreactors. 
+This repository contains a Data Engineering pipeline designed to ingest, validate, and route raw IoT sensor telemetry from industrial bioreactors, for example. 
 
 ## The Objective
-Industrial sensor data is inherently chaotic, suffering from asynchronous sampling, hardware failures, and network packet loss. Standard data science pipelines often rely on downstream imputation (like replacing anomalies with rolling averages), which masks hardware degradation and creates "Silent Failures."
+Industrial sensor data is chaotic and suffers from asynchronous sampling, hardware failures, and network packet loss. Standard data science pipelines often rely on downstream imputation (like replacing anomalies with rolling averages), which masks hardware degradation and creates "Silent Failures."
 
-This pipeline implements a strict Dead Letter Queue (DLQ) Architecture. It prioritizes data lineage by enforcing physical and chemical boundary constraints at the point of ingestion. Valid data is routed to a clean database, while anomalous data is quarantined into a diagnostic JSON log for hardware maintenance review.
+This pipeline implements a Dead Letter Queue (DLQ) Architecture. It prioritizes data lineage by enforcing physical and chemical boundary constraints at the point of ingestion. Clean data is routed to a clean database, while anomalous data is routed into a JSON log for  maintenance review.
 
 ## Data Provenance & Synthetic Stress-Testing
-Because publicly available industrial datasets are often aggressively pre-cleaned for academic machine learning tasks, the telemetry data used in this repository (`dirty_bioreactor_telemetry.csv`) was synthetically generated via an LLM. 
+Because publicly available industrial datasets are often  pre-cleaned for academic machine learning tasks, the telemetry data used in this repository (`dirty_bioreactor_telemetry.csv`) was synthetically generated via an LLM. 
 
 It was deliberately engineered to inject specific, critical edge cases found in real-world IoT environments to stress-test the pipeline's fault tolerance, including:
 * Temporal chaos (mixed Unix epoch, ISO 8601, and missing timestamps)
@@ -28,9 +28,9 @@ Native Python dictionary iteration (`to_dict('records')`) to bypass Pandas row-i
 
 ## Domain Constraints (Pydantic Schema)
 The pipeline enforces the following physical boundaries for a toy aqueous bioreactor system. Any row violating these constraints is automatically quarantined:
-* **Temperature:** 0.0°C to 100.0°C (Liquid water constraints)
-* **pH Level:** 0.0 to 14.0 (Standard chemical scale)
-* **Pressure:** 0.0 to 100.0 PSI (Structural tank limits)
+* Temperature: 0.0°C to 100.0°C (Liquid water constraints)
+* pH Level: 0.0 to 14.0 (Standard chemical scale)
+* Pressure: 0.0 to 100.0 PSI (Structural tank limits)
 
 ## Installation & Execution
 
@@ -53,7 +53,7 @@ From the project root, build the "telemetry-etl" image:
 
 ### Execute the Pipeline (with Volume Mounting)
 
-To allow the container to read your raw telemetry and write the output files back to your local data/ folder, run:
+To write the output files back to the local `data/` folder, run:
 
 `docker run --rm -v "$(pwd)/data:/app/data" telemetry-etl`
 
