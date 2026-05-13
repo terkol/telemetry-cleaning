@@ -1,6 +1,6 @@
 # Industrial Telemetry ETL
 
-This repository contains a Data Engineering pipeline designed to ingest, validate, and route raw IoT sensor telemetry from industrial bioreactors, for example. 
+This repository contains a data engineering pipeline designed to ingest, validate, and route raw IoT sensor telemetry from industrial bioreactors, for example. 
 
 ## The Objective
 Industrial sensor data is chaotic and suffers from asynchronous sampling, hardware failures, and network packet loss. Standard data science pipelines often rely on downstream imputation (like replacing anomalies with rolling averages), which masks hardware degradation and creates "Silent Failures."
