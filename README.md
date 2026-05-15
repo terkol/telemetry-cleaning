@@ -1,6 +1,6 @@
 # Industrial Telemetry ETL
 
-This repository contains a data engineering pipeline designed to ingest, validate, and route raw IoT  telemetry from industrial bioreactors, for example. 
+A pipeline designed to ingest, validate, and route raw IoT  telemetry from industrial bioreactors, for example. 
 
 ## The Objective
 
