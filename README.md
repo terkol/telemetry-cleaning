@@ -41,7 +41,7 @@ The pipeline enforces the following physical boundaries for a toy aqueous biorea
 
 The pipeline can be executed manually or with Docker.
 
-### Manual method:
+### Manual method
 
 Install the requirements (pandas, pydantic):
 
